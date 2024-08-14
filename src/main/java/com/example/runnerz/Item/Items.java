@@ -1,4 +1,4 @@
-package com.example.runnerz.items;
+package com.example.runnerz.Item;
 
 import java.util.List;
 

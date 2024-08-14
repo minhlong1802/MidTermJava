@@ -1,11 +1,10 @@
-CREATE TABLE IF NOT EXISTS item (
-    id INT NOT NULL,
+CREATE TABLE item (
+    id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    discount_price DECIMAL(10, 2),
-    image_url VARCHAR(255),
-    description TEXT,
-    category ENUM('CATEGORY_ONE', 'CATEGORY_TWO', 'CATEGORY_THREE') NOT NULL,
-    status ENUM('AVAILABLE', 'OUT_OF_STOCK', 'DISCONTINUED') NOT NULL
-    PRIMARY KEY (id)
+    discountPrice DECIMAL(10, 2) NOT NULL,
+    imageUrl VARCHAR(255) ,
+    description TEXT NOT NULL,
+    category VARCHAR(20) NOT NULL CHECK (category IN ('CATEGORY_ONE', 'CATEGORY_TWO', 'CATEGORY_THREE')),
+    status VARCHAR(20) NOT NULL CHECK (status IN ('AVAILABLE', 'OUT_OF_STOCK', 'DISCONTINUED'))
 );
