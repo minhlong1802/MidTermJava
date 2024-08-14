@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Management</h1>
+        
+        <!-- Search Form -->
+        <div class="search-form">
+            <input type="text" id="search-name" placeholder="Search by name">
+            <input type="number" id="min-price" placeholder="Min price">
+            <input type="number" id="max-price" placeholder="Max price">
+            <select id="search-type">
+                <option value="name">Search by Name</option>
+                <option value="price">Search by Price Range</option>
+            </select>
+            <button onclick="searchProducts()">Search</button>
+        </div>
+        
+        <!-- Product List -->
+        <div class="product-list">
+            <h2>Product List</h2>
+            <table id="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Discount Price</th>
+                        <th>ImageUrl</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <!-- Products will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Add New Product Form -->
+        <div class="add-product-form">
+            <h2>Add New Product</h2>
+            <form id="add-product-form" onsubmit="return addProduct()">
+                <input type="text" id="product-name" placeholder="Product Name" required>
+                <input type="number" id="product-price" placeholder="Price" required>
+                <input type="number" id="product-discount-price" placeholder="Discount Price">
+                <input type="text" id="product-image-url" placeholder="Image URL">
+                <textarea id="product-description" placeholder="Description"></textarea>
+                <select id="product-category">
+                    <option value="CATEGORY_ONE">Category One</option>
+                    <option value="CATEGORY_TWO">Category Two</option>
+                    <option value="CATEGORY_THREE">Category Three</option>
+                </select>
+                <select id="product-status">
+                    <option value="AVAILABLE">Available</option>
+                    <option value="OUT_OF_STOCK">Out of Stock</option>
+                    <option value="DISCONTINUED">Discontinued</option>
+                </select>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const apiUrl = "http://localhost:8080/api/items"; // Replace with your backend API URL
+
+        // Function to fetch and display products
+        function fetchProducts() {
+            axios.get(apiUrl)
+                .then((response) => {
+                    const tbody = document.getElementById("product-tbody");
+                    tbody.innerHTML = "";
+                    response.data.forEach((product) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.price}</td>
+                            <td>${product.discountPrice}</td>
+                            <td>${product.imageUrl}</td>
+                            <td>${product.description}</td>
+                            <td>${product.category}</td>
+                            <td>${product.status}</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Delete</button>
+                                <button class="btn btn-warning" onclick="updateProduct(${product.id})">Update</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching products:", error);
+                });
+        }
+
+        // Function to add a new product
+        function addProduct() {
+            const product = {
+                name: document.getElementById("product-name").value,
+                price: parseFloat(document.getElementById("product-price").value),
+                discountPrice: parseFloat(document.getElementById("product-discount-price").value),
+                imageUrl: document.getElementById("product-image-url").value,
+                description: document.getElementById("product-description").value,
+                category: document.getElementById("product-category").value,
+                status: document.getElementById("product-status").value,
+            };
+
+            axios.post(apiUrl + "/create", product)
+                .then(() => {
+                    fetchProducts();
+                })
+                .catch((error) => {
+                    console.error("Error adding product:", error);
+                });
+
+            
+        }
+
+        // Function to delete a product by ID
+        function deleteProduct(id) {
+            axios.delete(apiUrl + "/delete/" + id)
+                .then(() => {
+                    fetchProducts();
+                })
+                .catch((error) => {
+                    console.error("Error deleting product:", error);
+                });
+        }
+
+        // Function to update a product by ID
+        function updateProduct(id) {
+            // Fetch the product details first
+            axios.get(apiUrl + "/" + id)
+                .then((response) => {
+                    const product = response.data;
+
+                    // Pre-fill the form fields with product data
+                    document.getElementById("product-name").value = product.name;
+                    document.getElementById("product-price").value = product.price;
+                    document.getElementById("product-discount-price").value = product.discountPrice;
+                    document.getElementById("product-image-url").value = product.imageUrl;
+                    document.getElementById("product-description").value = product.description;
+                    document.getElementById("product-category").value = product.category;
+                    document.getElementById("product-status").value = product.status;
+
+                    // Modify the form's submit button to update
+                    document.getElementById("add-product-form").onsubmit = function() {
+                        const updatedProduct = {
+                            id: id,
+                            name: document.getElementById("product-name").value,
+                            price: parseFloat(document.getElementById("product-price").value),
+                            discountPrice: parseFloat(document.getElementById("product-discount-price").value),
+                            imageUrl: document.getElementById("product-image-url").value,
+                            description: document.getElementById("product-description").value,
+                            category: document.getElementById("product-category").value,
+                            status: document.getElementById("product-status").value,
+                        };
+
+                        axios.put(apiUrl + "/update/" + id, updatedProduct)
+                            .then(() => {
+                                fetchProducts();
+                                // Reset the form and re-enable default submit behavior
+                                document.getElementById("add-product-form").reset();
+                                document.getElementById("add-product-form").onsubmit = addProduct;
+                            })
+                            .catch((error) => {
+                                console.error("Error updating product:", error);
+                            });
+
+                        return false; // Prevent form submission
+                    };
+                })
+                .catch((error) => {
+                    console.error("Error fetching product for update:", error);
+                });
+        }
+
+        // Function to search products
+        function searchProducts() {
+            const searchType = document.getElementById("search-type").value;
+            let searchUrl = apiUrl;
+
+            if (searchType === "name") {
+                const name = document.getElementById("search-name").value;
+                if (name) {
+                    searchUrl += `/search?name=${name}`;
+                }
+            } else if (searchType === "price") {
+                const minPrice = document.getElementById("min-price").value;
+                const maxPrice = document.getElementById("max-price").value;
+                if (minPrice && maxPrice) {
+                    searchUrl += `/price-range?minPrice=${minPrice}&maxPrice=${maxPrice}`;
+                }
+            }
+
+            axios.get(searchUrl)
+                .then((response) => {
+                    const tbody = document.getElementById("product-tbody");
+                    tbody.innerHTML = "";
+                    response.data.forEach((product) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.price}</td>
+                            <td>${product.discountPrice}</td>
+                            <td><img src="${product.imageUrl}" alt="Image" width="50" height="50"></td>
+                            <td>${product.description}</td>
+                            <td>${product.category}</td>
+                            <td>${product.status}</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Delete</button>
+                                <button class="btn btn-warning" onclick="updateProduct(${product.id})">Update</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error searching products:", error);
+                });
+        }
+
+        // Fetch products on page load
+        window.onload = fetchProducts;
+    </script>
+</body>
+</html>
