@@ -1,0 +1,104 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Running Shoes",
+      "price": 99.99,
+      "discount_price": 79.99,
+      "image_url": "https://example.com/images/shoes.jpg",
+      "description": "High-quality running shoes for all terrains.",
+      "category": "CATEGORY_ONE",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 2,
+      "name": "Sports Watch",
+      "price": 149.99,
+      "discount_price": 129.99,
+      "image_url": "https://example.com/images/watch.jpg",
+      "description": "Smartwatch with GPS and heart rate monitor.",
+      "category": "CATEGORY_TWO",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 3,
+      "name": "Fitness Tracker",
+      "price": 49.99,
+      "discount_price": 39.99,
+      "image_url": "https://example.com/images/fitness_tracker.jpg",
+      "description": "Track your daily activities and sleep patterns.",
+      "category": "CATEGORY_TWO",
+      "status": "OUT_OF_STOCK"
+    },
+    {
+      "id": 4,
+      "name": "Water Bottle",
+      "price": 19.99,
+      "discount_price": 14.99,
+      "image_url": "https://example.com/images/water_bottle.jpg",
+      "description": "Insulated water bottle keeps your drink cold.",
+      "category": "CATEGORY_ONE",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 5,
+      "name": "Yoga Mat",
+      "price": 29.99,
+      "discount_price": 24.99,
+      "image_url": "https://example.com/images/yoga_mat.jpg",
+      "description": "Non-slip yoga mat for all your workouts.",
+      "category": "CATEGORY_THREE",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 6,
+      "name": "Protein Powder",
+      "price": 59.99,
+      "discount_price": 49.99,
+      "image_url": "https://example.com/images/protein_powder.jpg",
+      "description": "High-protein supplement for muscle recovery.",
+      "category": "CATEGORY_ONE",
+      "status": "DISCONTINUED"
+    },
+    {
+      "id": 7,
+      "name": "Resistance Bands",
+      "price": 24.99,
+      "discount_price": 19.99,
+      "image_url": "https://example.com/images/resistance_bands.jpg",
+      "description": "Set of resistance bands for strength training.",
+      "category": "CATEGORY_THREE",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 8,
+      "name": "Treadmill",
+      "price": 999.99,
+      "discount_price": 899.99,
+      "image_url": "https://example.com/images/treadmill.jpg",
+      "description": "High-end treadmill with various workout programs.",
+      "category": "CATEGORY_TWO",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 9,
+      "name": "Cycling Gloves",
+      "price": 34.99,
+      "discount_price": 29.99,
+      "image_url": "https://example.com/images/cycling_gloves.jpg",
+      "description": "Comfortable gloves with extra grip for cycling.",
+      "category": "CATEGORY_ONE",
+      "status": "OUT_OF_STOCK"
+    },
+    {
+      "id": 10,
+      "name": "Jump Rope",
+      "price": 14.99,
+      "discount_price": 9.99,
+      "image_url": "https://example.com/images/jump_rope.jpg",
+      "description": "Adjustable jump rope for cardio workouts.",
+      "category": "CATEGORY_THREE",
+      "status": "AVAILABLE"
+    }
+  ]
+}
